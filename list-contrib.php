@@ -13,8 +13,9 @@ $doc = new DOMDocument();
 $elements = $doc->getElementsByTagName('span');
 $modules = [];
 foreach ($elements as $element) {
-  if (strpos(strtolower($element->nodeValue), 'commerce') !== FALSE) {
-  	$modules[$element->nodeValue] = $element->firstChild->getAttribute('href');
+  $url = $element->firstChild->getAttribute('href');
+  if (strpos($url, '/project/commerce_') === 0) {
+    $modules[$element->nodeValue] = $element->firstChild->getAttribute('href');
   }
 }
 print count($modules) . ' modules:' . PHP_EOL;
