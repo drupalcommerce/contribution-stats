@@ -18,26 +18,27 @@ $elements = $doc->getElementsByTagName('span');
 $modules = [];
 
 foreach ($elements as $element) {
-  if (strpos(strtolower($element->nodeValue), 'commerce') !== FALSE) {
-  	$modules[$element->nodeValue] = $element->firstChild->getAttribute('href');
-  }
+    if (strpos(strtolower($element->nodeValue), 'commerce') !== false) {
+        $modules[$element->nodeValue] = $element->firstChild->getAttribute('href');
+    }
 }
 
 $output_format = 'text';
-if(isset($args['o']) || isset($args['output-format'])) {
-  $output_format = isset($args['o']) ? $args['o'] : $args['output-format'];
+if (isset($args['o']) || isset($args['output-format'])) {
+    $output_format = isset($args['o']) ? $args['o'] : $args['output-format'];
 }
 
 switch ($output_format) {
-  case 'json':
-    print json_encode($modules,
-      JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
-    break;
-  case 'text':
-    print_r($modules);
-    print 'Total Modules: ' . count($modules) . PHP_EOL;
-    break;
-  default:
-    print 'The output format you specified is not valid';
+    case 'json':
+        print json_encode(
+            $modules,
+            JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE
+        );
+        break;
+    case 'text':
+        print_r($modules);
+        print 'Total Modules: ' . count($modules) . PHP_EOL;
+        break;
+    default:
+        print 'The output format you specified is not valid';
 }
-
