@@ -1,0 +1,19 @@
+#!/usr/bin/php
+<?php
+
+require __DIR__ . '/vendor/autoload.php';
+
+switch($argv[1]) {
+  case 'new-releases':
+    ContribStats\NewReleases\NewReleases::get();
+    break;
+  case 'contrib-parser':
+    ContribStats\ContribParser\ContribParser::parse();
+    break;
+  case 'list-contrib':
+    ContribStats\ListContrib\ListContrib::get();
+    break;
+  case 'help':
+  default:
+    print 'list, like.. options and stuff';
+}
