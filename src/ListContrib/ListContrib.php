@@ -15,7 +15,7 @@ class ListContrib
         // to filter by core version.
         $client = new \GuzzleHttp\Client();
 
-        $url = 'https://www.drupal.org/api-d7/node.json?type=project_module';
+        $url = 'https://www.drupal.org/api-d7/node.json?type=project_module&field_project_type=full';
         
         while($url) {
             $response = $client->get($url);
