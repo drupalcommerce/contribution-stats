@@ -2,28 +2,36 @@
 
 namespace ContribStats\NewReleases;
 
-use PHPHtmlParser\Dom;
+use CliArgs\CliArgs;
 
 class NewReleases
 {
     public static function get()
-    {
-        $args = getopt("", ['clear-cache', 'limit::', 'last::']);
+    {        
+        $config = [
+            'limit' => [
+                'default' => null
+            ],
+            'last' => [
+                'default' => null,
+            ],
+            'clear-cache' => 'c',
+        ];
+        
+        $cli_args = new CliArgs($config);
 
+        $last = $cli_args->getARg('last');
         $last_timestamp = null;
-        if (isset($args['last'])) {
-            $last_timestamp = strtotime("-" . $args['last'] . " day", time());
+        if (isset($last)) {
+            $last_timestamp = strtotime("-" . $last. " day", time());
         }
 
         $client = new \GuzzleHttp\Client();
 
-        $limit = $args['limit'] ?? null;
-
         $modules = json_decode(file_get_contents('module-list.json'));
 
         $newReleases = [];
-        foreach ($modules as $name => $module) {
-            $machine_name = explode('/', $module)[2];
+        foreach ($modules as $name => $machine_name) {
             $filename = 'cache/' . $machine_name;
             $filename_nid = $filename . '_nid';
             $filename_releases = $filename . '_releases';
@@ -58,7 +66,7 @@ class NewReleases
                 $newReleases[] = [
                 'timestamp' => $release->created,
                 'name' => $name,
-                'url' => 'https://www.drupal.org' . $module,
+                'url' => 'https://www.drupal.org/project/' . $machine_name,
                 'version' => $release->field_release_version,
                 'usage' => $release->release_usage ?? 0,
                 'description' => $release->field_release_short_description,
@@ -72,6 +80,8 @@ class NewReleases
 
         print "| Date| Name | Version | Installs | Description\n";
         print "| ---- | --------- | ------- | -------- | ----- |\n";
+        
+        $limit = $cli_args->getARg('limit');
         $i = 0;
         foreach ($newReleases as $release) {
             $date = date('F j, Y', $release['timestamp']);

@@ -2,7 +2,8 @@
     "name": "smccabe/contribution-stats",
     "description": "Pulls the Drupal 8 Commerce module list and stats.",
     "require": {
-        "guzzlehttp/guzzle": "^7.4"
+        "guzzlehttp/guzzle": "^7.4",
+        "cheprasov/php-cli-args": "^3.0"
     },
     "require-dev": {
         "squizlabs/php_codesniffer": "^3.6"
